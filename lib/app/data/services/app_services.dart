@@ -1,6 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import '../../../main.dart';
 import '../providers/shared_prefs.dart';
 
 class AppServices extends GetxService {
@@ -11,8 +14,8 @@ class AppServices extends GetxService {
     getAccessToken();
     getUserId();
     getuserdata();
+    registerNotification();
     // registerNotification();
-
     SystemChrome.setPreferredOrientations(const [
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -28,56 +31,44 @@ class AppServices extends GetxService {
     );
   }
 
-  // FirebaseMessaging? _messaging;
-  // void registerNotification() async {
-  //   // await Firebase.initializeApp();
-  //   _messaging = FirebaseMessaging.instance;
+  FirebaseMessaging? _messaging;
+  void registerNotification() async {
+    // await Firebase.initializeApp();
+    _messaging = FirebaseMessaging.instance;
 
-  //   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  //   NotificationSettings settings = await _messaging!.requestPermission(
-  //     alert: true,
-  //     badge: true,
-  //     provisional: false,
-  //     sound: true,
-  //   );
+    NotificationSettings settings = await _messaging!.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
 
-  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-  //     print('User granted permission');
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
 
-  //     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //       print(
-  //           'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
-  //       // Parse the message received
-  //       // PushNotification notification = PushNotification(
-  //       //   title: message.notification?.title,
-  //       //   body: message.notification?.body,
-  //       //   dataTitle: message.data['title'],
-  //       //   dataBody: message.data['body'],
-  //       // );
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(
+            'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
 
-  //       if (message.notification?.title == 'queue') {
-  //         isMessage = true;
-  //       }
-
-  //       if (message.notification?.title == 'notify-responsible') {
-  //         showSimpleNotification(
-  //           Text('${message.notification?.title}'),
-  //           subtitle: Text('${message.notification?.body}'),
-  //           background: Colors.cyan.shade700,
-  //           duration: const Duration(seconds: 2),
-  //         );
-  //         // notification.
-  //       }
-
-  //       if (message.notification?.title == 'update') {
-  //         isUpdate = true;
-  //       }
-  //     });
-  //   } else {
-  //     print('User declined or has not accepted permission');
-  //   }
-  // }
+        // todo put the logic for handling here
+        // if the tag of the message == to special tag from server
+        // do some logic
+        // my code's example:
+        /// if (message.notification?.title == 'queue') {
+        ///   isMessage = true;
+        /// }
+        // when the title coming from the server = queue (2tf2t m3 omar 3aleeh)
+        // set the isMessage flag = true
+        // inside the logic of my code theres a listener (Timer.periodic every 1sec)
+        // when the listener gets the flag = true call a function and set the flag = false
+        // and start over if a notification came.
+      });
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
 
   /*--------------------------------------------------------------------------*/
   /*------------------------------  Variables  -------------------------------*/
