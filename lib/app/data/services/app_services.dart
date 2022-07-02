@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ class AppServices extends GetxService {
     getUserId();
     // getfirsttime();
     getuserdata();
+    registerNotification();
     // getPinCode();
 
     SystemChrome.setPreferredOrientations(const [
@@ -27,6 +30,57 @@ class AppServices extends GetxService {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
+  }
+
+  FirebaseMessaging? _messaging;
+  void registerNotification() async {
+    await Firebase.initializeApp();
+    _messaging = FirebaseMessaging.instance;
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    NotificationSettings settings = await _messaging!.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(
+            'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+        // Parse the message received
+        // PushNotification notification = PushNotification(
+        //   title: message.notification?.title,
+        //   body: message.notification?.body,
+        //   dataTitle: message.data['title'],
+        //   dataBody: message.data['body'],
+        // );
+
+        if (message.notification?.title == 'queue') {
+          isMessage = true;
+        }
+
+        if (message.notification?.title == 'notify-responsible') {
+          showSimpleNotification(
+            Text('${message.notification?.title}'),
+            subtitle: Text('${message.notification?.body}'),
+            background: Colors.cyan.shade700,
+            duration: const Duration(seconds: 2),
+          );
+          // notification.
+        }
+
+        if (message.notification?.title == 'update') {
+          isUpdate = true;
+        }
+      });
+    } else {
+      print('User declined or has not accepted permission');
+    }
   }
 
   /*--------------------------------------------------------------------------*/
