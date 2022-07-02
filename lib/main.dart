@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'app/data/services/app_services.dart';
 import 'app/data/services/translation_service.dart';
 import 'app/core/theme/theme.dart';
 import 'app/routes/app_pages.dart';
+import 'firebase_options.dart';
 
 Future<void> initServices() async {
   Get.log('starting services ...');
@@ -15,6 +17,7 @@ Future<void> initServices() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initServices();
   runApp(MyApp());
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1092854168522",
+    "project_id": "fehu-3de79",
+    "storage_bucket": "fehu-3de79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092854168522:android:b4562cd2ef96634d376d33",
+        "android_client_info": {
+          "package_name": "com.example.fehu_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092854168522-ilu1mo6dat4cb79lr2jm9s6vm0havtpk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDODKLsq981ChsnpHp955AfGthBsMmBC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092854168522-ilu1mo6dat4cb79lr2jm9s6vm0havtpk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
